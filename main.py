@@ -74,7 +74,16 @@ async def on_message(message):
     # helper/intro command
     if msg.startswith("$h"):
         await message.channel.send(
-            'Hey There! I am roli. \nI am here to assist you to bring laughter in your miserable life.\n\n$j -> random joke\n$p -> programming joke\n$responding -> set if the bot will respond to sad message or not\n$list -> list all uplifting words\n$new msg -> add new uplifting message\n$del index -> delete uplifting message\nInstall Link -> https://discord.com/api/oauth2/authorize?client_id=849639569733058590&permissions=2151148096&scope=bot'
+            'Hey There! I am roli. \
+            \n I am here to assist you to bring laughter in your miserable life.\
+            \n\n $j -> random joke\n$p -> programming joke\
+            \n $responding -> set if the bot will respond to sad message or not\
+            \n $list -> list all uplifting words\
+            \n $new msg -> add new uplifting message\
+            \n $del index -> delete uplifting message\
+            \n\n Source code -> https://replit.com/@Roopaish/Roli-Roli\
+            \n Github -> https://github.com/Roopaish/Roli-Roli\
+            \n Install Link -> https://discord.com/api/oauth2/authorize?client_id=849639569733058590&permissions=2151148096&scope=bot'
         )
 
     # get jokes with commands
