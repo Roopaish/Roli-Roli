@@ -83,7 +83,7 @@ async def on_message(message):
             \n $new msg -> add new uplifting message\
             \n $del index -> delete uplifting message\
             \n\n Source code -> <https://replit.com/@Roopaish/Roli-Roli>\
-            \n Github -> <https://github.com/Roopaish/Roli-Roli\>
+            \n Github -> <https://github.com/Roopaish/Roli-Roli>\
             \n Install Link -> <https://discord.com/api/oauth2/authorize?client_id=849639569733058590&permissions=2151148096&scope=bot>'
         )
 
