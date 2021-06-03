@@ -76,7 +76,8 @@ async def on_message(message):
         await message.channel.send(
             'Hey There! I am roli. \
             \n I am here to assist you to bring laughter in your miserable life.\
-            \n\n $j -> random joke\n$p -> programming joke\
+            \n\n $j -> random joke\
+            \n $p -> programming joke\
             \n $responding -> set if the bot will respond to sad message or not\
             \n $list -> list all uplifting words\
             \n $new msg -> add new uplifting message\
