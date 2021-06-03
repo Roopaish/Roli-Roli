@@ -1,5 +1,5 @@
 import neverSleep
-neverSleep.awake('https://replit.com/@RupeshBudhathok/rolifybot#main.py')
+neverSleep.awake('https://Roli-Roli.roopaish.repl.co')
 
 import discord, os, requests, json, random
 
