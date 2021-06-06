@@ -3,7 +3,7 @@
 
 # neverSleep.awake('https://Roli-Roli.roopaish.repl.co')
 
-import discord, os, requests, json, random
+import os, requests, json, random
 from discord.ext import commands
 
 ### Using replit database
@@ -11,8 +11,6 @@ from replit import db
 
 ### Getting token from environment
 token = os.environ['TOKEN']
-
-### Extensions
 
 ### Connection to discord
 client = commands.Bot(command_prefix=".")
@@ -23,25 +21,38 @@ client = commands.Bot(command_prefix=".")
 async def on_ready():
     print(f"You are Logged in as {client.user}")
 
+# @client.event
+# async def on_member_join( member):
+#     # await ctx.send(f'Warm Greetings {member}! Enjoy your stay.')
+#     print(f'{member} came')
+
+# @client.event
+# async def on_member_remove( member):
+#     # await ctx.send(f'So sad to see you go {member}! Hope you\'ll come back.')
+#     print(f'{member} left')
 
 ### Bot commands with functions
 
 # Greetings
-@client.command(name = 'hi', aliases = ['hey', 'hello'])
+@client.command(name = 'hi', aliases = ['hey', 'hello'], brief = 'Say hi to the bot')
 async def hi(ctx):
     await ctx.send('>>> ```Hey there!\
                 \nI am Roli.\
                 \nI am here to make you laugh and play music for you.```')
 
 # Check ping
-@client.command()
+@client.command(brief="Shows ping.")
 async def ping(ctx):
     await ctx.send(f'**Pong!** {round(client.latency * 1000)}ms')
 
 # Clear messages
-@client.command()
-# @commands.has_permissions(manage_message = True)
-# @commands.has_role("admin")
+# @client.command(pass_context = True)
+# async def clear(ctx, amount = 1):
+#     if ctx.message.author.server_permissions.administrator:
+#         await ctx.channel.purge(limit = amount)
+
+@client.command(brief = '[.clear number] clear specified amount of messages')
+@commands.has_role('admin')
 async def clear(ctx, amount = 1):
     await ctx.channel.purge(limit = amount)
 
@@ -53,7 +64,7 @@ def random_joke():
     joke = json_data['setup'] + '\n\n' + json_data['punchline']
     return joke
 
-@client.command(aliases=['rj'])
+@client.command(aliases=['rj'], brief = '[.rj] get random jokes')
 async def random_jokes(ctx):
     await ctx.send(random_joke())
 
@@ -66,7 +77,7 @@ def programming_joke():
     joke = json_data[0]['setup'] + '\n\n' + json_data[0]['punchline']
     return joke
 
-@client.command(aliases=['pj'])
+@client.command(aliases=['pj'], brief = '[.pj] get programming jokes')
 async def programming_jokes(ctx):
     await ctx.send(programming_joke())
 
@@ -80,7 +91,7 @@ if 'responding' not in db.keys():
 
 
 # Toggle responding to sad message
-@client.command(aliases=['respond'])
+@client.command(aliases=['respond'], brief = '[.respond True or False] Set either to respond to sad messages or not')
 async def responding(ctx, value):
     if value.lower() == "true":
         db['responding'] = True
@@ -100,7 +111,7 @@ def update_uplifting_words(msg):
         db['uplifting_words'] = [msg]
 
 
-@client.command()
+@client.command(brief = '[.new some words] add new words to respond')
 async def new(ctx, *, words):
     update_uplifting_words(words)
     await ctx.send('New uplifting words added!')
@@ -114,7 +125,7 @@ def delete_uplifting_words(index):
         db['uplifting_words'] = uplifting_words
 
 
-@client.command(aliases = ['del'])
+@client.command(aliases = ['del'], brief = '[.del index] delete uplifting words')
 async def delete_words(ctx, index):
     deleted_words = ''
     if 'uplifting_words' in db.keys():
@@ -125,7 +136,7 @@ async def delete_words(ctx, index):
 
 
 # list all uplifting words
-@client.command('list')
+@client.command(name = 'list', brief = 'list all responding words')
 async def list_words(ctx):
     uplifting_words = []
     if 'uplifting_words' in db.keys():
@@ -154,6 +165,23 @@ async def on_message(message):
                 f'{random.choice(options)}\nI have something to make you laugh\n\n{random_joke()}'
             )
 
+### Extensions(cogs) Load and Unload
+@client.command(brief = 'Load an extension')
+async def load(ctx, extension):
+    client.load_extension(f'extensions.{extension}')
+    await ctx.send(f'{extension} extension loaded.')
+
+@client.command(brief = 'Unload an extension')
+async def unload(ctx, extension):
+    client.unload_extension(f'extensions.{extension}')
+    await ctx.send(f'{extension} extension unloaded.')
+
+# Auto Load extensions
+for filename in os.listdir('./extensions'):
+    if filename.endswith('.py'):
+        client.load_extension(f'extensions.{filename[:-3]}')
+        print(f'loaded {filename[:-3]}')
+    else:
+        print(f'Unable to load {filename[:-3]}')
 
 client.run(token)
-
